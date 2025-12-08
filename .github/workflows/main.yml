@@ -1,0 +1,35 @@
+# .github/workflows/main.yml
+name: Python CI Calculator Test
+
+# 1. THE TRIGGER: When do we run this?
+# We run this on any Pull Request that targets the 'main' branch
+on:
+  pull_request:
+    branches: [ "main" ]
+
+# 2. THE JOB: What computer do we use?
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest  # We use a virtual machine provided by GitHub
+
+    # 3. THE STEPS: What instructions does the robot follow?
+    steps:
+    # A. Check out the code from the repository
+    - uses: actions/checkout@v3
+
+    # B. Install Python on the virtual machine
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.9"
+
+    # C. Install our testing library (pytest)
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # D. Run the actual tests
+    - name: Run Tests with Pytest
+      run: |
+        pytest
